@@ -1,11 +1,31 @@
 import { Form, FormGroup, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from 'axios'
+
+const client = axios.create({
+    baseURL: "http://localhost:4000/api"
+})
+
 
 export default function NewToDo() {
+    const [users, setUsers] = useState([])
+
+    useEffect(() => {
+        client.get('/user')
+            .then((resp) => {
+                setUsers(resp.data)
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    })
+
+
     return (
         <Form className="mx-3">
             <Link variant="white" 
-                class="btn-close btn-close-white 
+                className="btn-close btn-close-white 
                     position-absolute top-0 end-0 mt-3 me-5 
                     border border-dark border-3" to="/" />
             <Row xs="10">
@@ -21,6 +41,9 @@ export default function NewToDo() {
                         <Form.Label className="text-light">Owner Name</Form.Label>
                         <Form.Select size="lg" aria-label="This is who I am">
                             <option>Who to blame?</option>
+                            {users.map((user) => {
+                                return (<option key={user.id}>{user.name}</option>)
+                            })}
                         </Form.Select>
                         <Form.Text className="text-muted">The person we blame for forgetting</Form.Text>
                     </FormGroup>
