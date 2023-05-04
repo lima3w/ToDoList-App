@@ -1,4 +1,4 @@
-import { Form, FormGroup, Row, Col, CloseButton } from "react-bootstrap";
+import { Form, FormGroup, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 export default function NewToDo() {
