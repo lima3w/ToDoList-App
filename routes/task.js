@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
     // console.log("DB Ready? " + mongoose.connection.readyState); // 1 or 2 is good. 
     try {
         const alltasks = await tasks.find({})
-        console.log(alltasks)
+        // console.log(alltasks)
         res.json(alltasks)
     } catch (err) {
         console.log(err)
@@ -48,7 +48,7 @@ router.get('/:id', async (req, res) => {
     // console.log("DB Ready? " + mongoose.connection.readyState); // 1 or 2 is good. 
     try {
         const taskById = await tasks.findById(req.params.id)
-        console.log(taskById)
+        // console.log(taskById)
         res.json(taskById)
     } catch (err) {
         console.log(err)
@@ -57,15 +57,28 @@ router.get('/:id', async (req, res) => {
 })
 
 router.put('/', async (req, res) => {
-    const newTask = await tasks.create({
-        title: req.body.title, 
-        description: req.body.description,
-        priority: req.body.priority,
-        status: req.body.status,
-        due_date: req.body.due_date,
-        user_id: req.body.user_id
-    })
-    res.json(newTask._id)
+    try {
+
+        const newtitle = req.body.title || ""
+        const newdescription = req.body.description || ""
+        const newpriority = req.body.priority || ""
+        const newstatus = req.body.status || ""
+        const newdue_date = req.body.due_date || ""
+        const newuser_id = req.body.user_id || ""
+
+        const newTask = await tasks.create({
+            title: newtitle, 
+            description: newdescription,
+            priority: newpriority,
+            status: newstatus,
+            due_date: newdue_date,
+            user_id: newuser_id
+        })
+        res.json(newTask._id)
+    } catch (err) {
+        console.log(err)
+        res.sendStatus(422)
+    }
 })
 
 

@@ -30,13 +30,10 @@ try {
     return false
 }
 
-// console.log(connectionString)
 
 router.get('/', async (req, res) => {
-    // console.log("DB Ready? " + mongoose.connection.readyState); // 1 or 2 is good. 
     try {
         const allassignments = await assignments.find({})
-        console.log(allassignments)
         res.json(allassignments)
     } catch (err) {
         console.log(err)
@@ -45,10 +42,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    // console.log("DB Ready? " + mongoose.connection.readyState); // 1 or 2 is good. 
     try {
         const assignmentById = await assignments.findById(req.params.id)
-        console.log(assignmentById)
         res.json(assignmentById)
     } catch (err) {
         console.log(err)
@@ -57,11 +52,17 @@ router.get('/:id', async (req, res) => {
 })
 
 router.put('/', async (req, res) => {
-    const newAssignment = await assignments.create({
-        user_id: req.body.user_id,
-        task_id: req.body.task_id
+    try {
+        const newAssignment = await assignments.create({
+            user_id: req.body.user_id,
+            task_id: req.body.task_id,
+            group_id: req.body.group_id
     })
-    res.json(newAssignment._id)
+    res.json(newAssignment._id) 
+    } catch (err) {
+        console.log(err)
+        res.sendStatus(422)
+    }
 })
 
 

@@ -1,14 +1,9 @@
 const mongoose = require('mongoose')
 
-const assignmentModel = new mongoose.Schema({
+const groupmembershipModel = new mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user', 
-        required: true
-    },    
-    task_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'task', 
         required: true
     },
     group_id: {
@@ -21,4 +16,4 @@ const assignmentModel = new mongoose.Schema({
 })
 
 
-module.exports = new mongoose.model("assignment", assignmentModel)
+module.exports = new mongoose.model("groupmembership", groupmembershipModel)

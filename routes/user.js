@@ -41,13 +41,9 @@ try {
     return false
 }
 
-// console.log(connectionString)
-
 router.get('/', async (req, res) => {
-    // console.log("DB Ready? " + mongoose.connection.readyState); // 1 or 2 is good. 
     try {
         const allusers = await users.find({})
-        console.log(allusers)
         res.json(allusers)
     } catch (err) {
         console.log(err)
@@ -56,10 +52,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    // console.log("DB Ready? " + mongoose.connection.readyState); // 1 or 2 is good. 
     try {
         const userById = await users.findById(req.params.id)
-        console.log(userById)
         res.json(userById)
     } catch (err) {
         console.log(err)
@@ -67,24 +61,33 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-if(process.env.USER_PW_EXPIRE && process.env.USER_PW_EXPIRE > 0 ){
-    const secondsPerDay = 60*60*24
-    const expirationAdvance = process.env.USER_PW_EXPIRE * secondsPerDay
-    const pw_expire = Date.now + expirationAdvance
-}
-else {
-    const pw_expire = Date.now + (60*60*24*365*20) // ~ 20 years
-}
+// let pw_expire
+
+// if(process.env.USER_PW_EXPIRE && process.env.USER_PW_EXPIRE > 0 ){
+//     const secondsPerDay = 60*60*24
+//     const expirationAdvance = process.env.USER_PW_EXPIRE * secondsPerDay
+//     pw_expire = Date.now + expirationAdvance
+// }
+// else {
+//     pw_expire = Date.now + (60*60*24*365*20) // ~ 20 years
+// }
+
+        // password_expires: pw_expire
+
 
 router.put('/', async (req, res) => {
-    const newUser = await user.create({
-        email: req.body.email,
-        name: req.body.name,
-        password: req.body.passwd,
-        password_changed: Date().now(),
-        password_expires: pw_expire
-    })
-    res.json(newUser.id)
+    try {
+        const newUser = await users.create({
+            email: req.body.email,
+            name: req.body.name,
+            password: req.body.password,
+        })
+        res.json(newUser.id)
+    } 
+    catch (err) {
+        console.log(err)
+        res.sendStatus(422)
+    }
 })
 
 

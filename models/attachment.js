@@ -1,6 +1,14 @@
 const mongoose = require('mongoose')
 
-const assignmentModel = new mongoose.Schema({
+const attachmentModel = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    url: {
+        type: String,
+        required: true
+    },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user', 
@@ -10,15 +18,10 @@ const assignmentModel = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'task', 
         required: true
-    },
-    group_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'group', 
-        required: true
     }
 }, {
     timestamps: true
 })
 
 
-module.exports = new mongoose.model("assignment", assignmentModel)
+module.exports = new mongoose.model("attachment", attachmentModel)

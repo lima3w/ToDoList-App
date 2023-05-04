@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const userModel = new mongoose.Schema({
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     name: {
         type: String, 
@@ -19,8 +20,8 @@ const userModel = new mongoose.Schema({
     },
     password_expires: {
         type: Date, 
-        default: Date.now + (60*60*24*365*20) //20 Years in future
-    },
+        default: () => new Date(+new Date() + (1000*60*60*24*365*20)) //20 Years in future
+    }
 }, {
     timestamps: true
 })
