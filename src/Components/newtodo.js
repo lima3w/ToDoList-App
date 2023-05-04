@@ -1,4 +1,4 @@
-import { Form, FormGroup, Row, Col } from "react-bootstrap";
+import { Form, FormGroup, Row, Col, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from 'axios'
@@ -6,6 +6,23 @@ import axios from 'axios'
 const client = axios.create({
     baseURL: "http://localhost:4000/api"
 })
+
+const form = document.querySelector("form");
+if(form) {
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+
+        client.put('/task', formData)
+            .then((resp) => {
+                console.log(resp)
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    })
+}
+
 
 
 export default function NewToDo() {
@@ -23,6 +40,7 @@ export default function NewToDo() {
 
 
     return (
+        <Container fluid="lg">
         <Form className="mx-3">
             <Link variant="white" 
                 className="btn-close btn-close-white 
@@ -42,7 +60,7 @@ export default function NewToDo() {
                         <Form.Select size="lg" aria-label="This is who I am">
                             <option>Who to blame?</option>
                             {users.map((user) => {
-                                return (<option key={user.id}>{user.name}</option>)
+                                return (<option key={user._id}>{user.name}</option>)
                             })}
                         </Form.Select>
                         <Form.Text className="text-muted">The person we blame for forgetting</Form.Text>
@@ -67,9 +85,13 @@ export default function NewToDo() {
             </Row>
             <Row className="mt-3 justify-content-md-center" xs="10">
                 <Col className="justify-content-md-center">
-                    <button type="button" name="saveTask" id="saveTask" className="btn btn-primary w-100">Save</button>
+                    <FormGroup controlId="NewTaskForm.SubmitBtn">
+                        <Form.Control type="submit" className="btn btn-primary w-100" dangerouslySetInnerHTML="SUBMIT" />
+                        {/* <button type="submit" name="saveTask" id="saveTask" className="btn btn-primary w-100">Save</button> */}
+                    </FormGroup>                    
                 </Col>
             </Row>
         </Form>
+        </Container>
     );
 }
