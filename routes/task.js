@@ -56,42 +56,14 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-// task_id (primary key)
-// title
-// description
-// priority
-// status
-// due_date
-// created_at
-// updated_at
-// user_id (foreign key referencing Users table)
-
 router.put('/', async (req, res) => {
     const newTask = await tasks.create({
-        title: {
-            type: String,
-            required: true
-        }, 
-        description: {
-            type: String,
-            required: true
-        },
-        priority: {
-            type: Number,
-            default: 0
-        },
-        status: {
-            type: String, 
-            default: "Created"
-        },
-        due_date: {
-            type: Date,
-            default: Date.now + (60*60*24*7) // 7 Days
-        },
-        user_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'user'
-        }
+        title: req.body.title, 
+        description: req.body.description,
+        priority: req.body.priority,
+        status: req.body.status,
+        due_date: req.body.due_date,
+        user_id: req.body.user_id
     })
     res.json(newTask._id)
 })
