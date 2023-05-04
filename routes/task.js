@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const tasks = require('../models/task')
+const users = require('../models/user')
 
 const db_url = process.env.MONGO_URL || "localhost"
 const db_port = process.env.MONGO_PORT || 27017
@@ -30,14 +31,18 @@ try {
     return false
 }
 
-// console.log(connectionString)
 
 router.get('/', async (req, res) => {
-    // console.log("DB Ready? " + mongoose.connection.readyState); // 1 or 2 is good. 
     try {
         const alltasks = await tasks.find({})
-        // console.log(alltasks)
-        res.json(alltasks)
+        const newtasklist = await tasks.aggregate([{$lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'user'
+           }}])
+
+        res.json(newtasklist)
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
@@ -45,10 +50,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    // console.log("DB Ready? " + mongoose.connection.readyState); // 1 or 2 is good. 
     try {
         const taskById = await tasks.findById(req.params.id)
-        // console.log(taskById)
         res.json(taskById)
     } catch (err) {
         console.log(err)
