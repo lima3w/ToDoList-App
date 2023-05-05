@@ -80,7 +80,7 @@ export default function NewToDo() {
                     console.error(err.message)
                 })
             }},
-            []
+            [params.id]
     )
     
 
