@@ -10,6 +10,7 @@ on:
     branches: [ "master" ]
 
 jobs:
+              
   build:
 
     runs-on: ubuntu-latest
@@ -21,6 +22,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Copy Sample config.json
+      uses: canastro/copy-file-action@master
+      with:
+        source: "src/config.sample.json"
+        target: "src/config.json"
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
