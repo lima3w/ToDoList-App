@@ -7,17 +7,6 @@ const router = express.Router();
 const mongoose = require('mongoose')
 const users = require('../models/user')
 
-// Table: user
-//     user_id (primary key)
-//     email
-//     name
-//     password
-//     created_at
-//     password_changed
-//     password_expires
-
-
-
 const db_url = process.env.MONGO_URL || "localhost"
 const db_port = process.env.MONGO_PORT || 27017
 const db_user = process.env.MONGO_USER

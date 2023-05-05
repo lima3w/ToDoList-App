@@ -6,13 +6,14 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const tasks = require('../models/task')
-const users = require('../models/user')
 
 const db_url = process.env.MONGO_URL || "localhost"
 const db_port = process.env.MONGO_PORT || 27017
 const db_user = process.env.MONGO_USER
 const db_password = process.env.MONGO_PASSWORD || ""
 const db_db = process.env.MONGO_DB || "todolist_test"
+
+
 
 let connectionString = "mongodb://"
 
@@ -34,7 +35,7 @@ try {
 
 router.get('/', async (req, res) => {
     try {
-        const alltasks = await tasks.find({})
+        // const alltasks = await tasks.find({})
         const newtasklist = await tasks.aggregate([{$lookup: {
             from: 'users',
             localField: 'user_id',
@@ -59,16 +60,15 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.put('/', async (req, res) => {
+router.post('/', async (req, res) => {
+    const incoming = req.body.tasks
+    const newtitle = incoming.title || ""
+    const newdescription = incoming.description || ""
+    const newpriority = incoming.priority || ""
+    const newstatus = incoming.status || ""
+    const newdue_date = incoming.due_date || ""
+    const newuser_id = incoming.user_id || ""
     try {
-
-        const newtitle = req.body.title || ""
-        const newdescription = req.body.description || ""
-        const newpriority = req.body.priority || ""
-        const newstatus = req.body.status || ""
-        const newdue_date = req.body.due_date || ""
-        const newuser_id = req.body.user_id || ""
-
         const newTask = await tasks.create({
             title: newtitle, 
             description: newdescription,
@@ -84,5 +84,27 @@ router.put('/', async (req, res) => {
     }
 })
 
+router.delete('/:id', async (req, res) =>{
+    try {
+        const deleted = await tasks.findByIdAndRemove(req.params.id)
+        res.status(200).send("ok")
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err.message)
+    }
+})
+
+router.patch('/:id', async (req, res) =>{
+    try {
+        const filter = { _id: req.params.id }
+        const update = req.body.tasks
+        
+        // const updated = await tasks.findByIdAndRemove(req.params.id)
+        res.status(200).send("ok")
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err.message)
+    }
+})
 
 module.exports = router;
