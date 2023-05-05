@@ -22,9 +22,10 @@ export default function NavBar() {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link href="newToDo">New ToDo</Nav.Link>
-                    <Nav.Link href="settings">Settings</Nav.Link>
-                    <Nav.Link href="logout">Logout</Nav.Link>
+                    <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/newToDo">New ToDo</Nav.Link>
+                    {/* <Nav.Link href="settings">Settings</Nav.Link>
+                    <Nav.Link href="logout">Logout</Nav.Link> */}
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

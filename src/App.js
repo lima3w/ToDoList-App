@@ -16,6 +16,7 @@ function App() {
       <>
         <Route exact path="/" name="Home" element={<ToDoList />} />
         <Route exact path="/newtodo" name="New ToDo" element={<NewToDo />} />
+        <Route path="/edittodo/:id" name="Edit ToDo" element={<NewToDo />} />
         <Route exact path="/loading" name="Loading" element={<Loading />} />
       </>
     )
