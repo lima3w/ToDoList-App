@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the server Docker image
-      run: docker build server/ --file Dockerfile --tag todolist-server:$(date +%s)
+      run: docker build server/ --file server/Dockerfile --tag todolist-server:$(date +%s)
     - name: Build the client Docker image
-      run: docker build client/ --file Dockerfile --tag todolist-client:$(date +%s)
+      run: docker build client/ --file client/Dockerfile --tag todolist-client:$(date +%s)
