@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master", "docker-test" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the server Docker image
+      run: docker build ./server --file Dockerfile --tag ToDoList-server:$(date +%s)
+    - name: Build the client Docker image
+      run: docker build ./client --file Dockerfile --tag ToDoList-client:$(date +%s)
