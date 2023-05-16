@@ -1,15 +1,23 @@
 FROM node:20-alpine
 
-RUN mkdir -p /usr/src/app/node_modules
+ENV NODE_PORT=3000
+ENV NODE_ENV=production
+ENV WORK_DIR=/usr/src/app
+ENV SERVER_URL=10.0.0.2
+ENV SERVER_PORT=4000
+ENV SERVER_PROTOCOL=http
+ENV SERVER_ROOT=/api
 
-WORKDIR /usr/src/app
+RUN mkdir -p ${WORK_DIR}/node_modules
 
-COPY package*.json ./
-
-RUN npm install
+WORKDIR ${WORK_DIR}
 
 COPY . .
 
-EXPOSE 3000
+RUN npm ci --omit=dev
 
-CMD [ "node", "src/index.js" ]
+RUN npm run build
+
+EXPOSE ${NODE_PORT}
+
+CMD [ "npx", "serve", "build" ]
