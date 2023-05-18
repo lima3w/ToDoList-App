@@ -1,6 +1,0 @@
-{
-    "BACKEND_URL": "10.0.0.2",
-    "BACKEND_PORT": 4000,
-    "BACKEND_PROTOCOL": "http",
-    "BACKEND_ROOT": "/api"
-}
